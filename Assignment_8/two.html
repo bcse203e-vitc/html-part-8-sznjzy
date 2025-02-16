@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Form Validator</title>
+    <style>
+        body {
+            font-family: 'Verdana', sans-serif;
+            margin: 25px;
+        }
+
+        input {
+            display: block;
+            margin: 12px 0;
+            padding: 10px;
+            width: 320px;
+            border: 2px solid #bbb;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .correct {
+            border-color: #28a745;
+            background-color: #f0fff4;
+        }
+
+        .error {
+            border-color: #dc3545;
+            background-color: #fff5f5;
+        }
+
+        .feedback {
+            color: #b00020;
+            font-size: 0.85em;
+            margin: -8px 0 12px 6px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Live Form Validator</h2>
+
+<form>
+    <input type="text" id="fullName" placeholder="Enter your name" oninput="checkName()">
+    <div id="fullNameMsg" class="feedback"></div>
+
+    <input type="email" id="userEmail" placeholder="Enter your email" oninput="checkEmail()">
+    <div id="emailMsg" class="feedback"></div>
+
+    <input type="password" id="userPassword" placeholder="Enter your password" oninput="checkPassword()">
+    <div id="passMsg" class="feedback"></div>
+
+    <button type="button" onclick="validateForm()">Submit</button>
+</form>
+
+<script>
+
+function checkName() {
+    const nameField = document.getElementById('fullName');
+    const nameMsg = document.getElementById('fullNameMsg');
+    const nameText = nameField.value.trim();
+
+    if (nameText === '') {
+        nameMsg.textContent = 'Name cannot be empty.';
+        nameField.classList.add('error');
+        nameField.classList.remove('correct');
+    } else {
+        nameMsg.textContent = '';
+        nameField.classList.add('correct');
+        nameField.classList.remove('error');
+    }
+}
+
+function checkEmail() {
+    const emailField = document.getElementById('userEmail');
+    const emailMsg = document.getElementById('emailMsg');
+    const emailText = emailField.value.trim();
+    const pattern = /^[^\\s@]+@[^\\s@]+\.[^\\s@]+$/;
+
+    if (!pattern.test(emailText)) {
+        emailMsg.textContent = 'Invalid email format.';
+        emailField.classList.add('error');
+        emailField.classList.remove('correct');
+    } else {
+        emailMsg.textContent = '';
+        emailField.classList.add('correct');
+        emailField.classList.remove('error');
+    }
+}
+
+function checkPassword() {
+    const passField = document.getElementById('userPassword');
+    const passMsg = document.getElementById('passMsg');
+    const passText = passField.value;
+    const passCheck = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+    if (!passCheck.test(passText)) {
+        passMsg.textContent = 'Password: 8+ chars, 1 uppercase, 1 number.';
+        passField.classList.add('error');
+        passField.classList.remove('correct');
+    } else {
+        passMsg.textContent = '';
+        passField.classList.add('correct');
+        passField.classList.remove('error');
+    }
+}
+
+function validateForm() {
+    checkName();
+    checkEmail();
+    checkPassword();
+
+    const fields = document.querySelectorAll('input');
+    let valid = true;
+
+    fields.forEach(field => {
+        if (field.classList.contains('error') || field.value.trim() === '') {
+            valid = false;
+        }
+    });
+
+    if (valid) {
+        alert('Form submitted successfully!');
+    } else {
+        alert('Please correct the errors before submitting.');
+    }
+}
+</script>
+
+</body>
+</html>

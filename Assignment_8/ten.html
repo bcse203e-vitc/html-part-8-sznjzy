@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Font Size Adjuster</title>
+</head>
+<body>
+
+<h2>Font Size Adjuster</h2>
+<p id="text">This is some sample text</p>
+<p id="sizeDisplay">Font size: 16px</p>
+<button onclick="adjustFontSize('increase')" aria-label="Increase Font">🔺 Increase Font</button>
+<button onclick="adjustFontSize('decrease')" aria-label="Decrease Font">🔻 Decrease Font</button>
+
+<script>
+let fontSize = 16;
+function adjustFontSize(action) {
+    const minSize = 10;
+    const maxSize = 100;
+
+    fontSize += action === 'increase' ? 2 : -2;
+    fontSize = Math.max(minSize, Math.min(maxSize, fontSize));
+
+    document.getElementById('text').style.fontSize = fontSize + 'px';
+    document.getElementById('sizeDisplay').textContent = `Font size: ${fontSize}px`;
+}
+</script>
+
+</body>
+</html>

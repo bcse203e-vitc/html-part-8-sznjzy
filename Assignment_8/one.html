@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Table Generator</title>
+</head>
+<body>
+
+<h3>Interactive Table Generator</h3>
+<input type="number" id="rowCount" placeholder="Rows">
+<input type="number" id="colCount" placeholder="Columns">
+<button onclick="buildTable()">Create Table</button>
+<div id="tableWrapper"></div>
+
+<script>
+function buildTable() {
+    const r = document.getElementById('rowCount').value;
+    const c = document.getElementById('colCount').value;
+    const wrapper = document.getElementById('tableWrapper');
+    wrapper.innerHTML = '';
+
+    const tbl = document.createElement('table');
+    tbl.style.borderCollapse = 'collapse';
+    tbl.style.marginTop = '20px';
+
+    for (let x = 0; x < r; x++) {
+        const tr = document.createElement('tr');
+        for (let y = 0; y < c; y++) {
+            const td = document.createElement('td');
+            td.textContent = `R${x + 1}-C${y + 1}`;
+            td.style.border = '1px solid black';
+            td.style.padding = '5px';
+            tr.appendChild(td);
+        }
+        const removeRowBtn = document.createElement('button');
+        removeRowBtn.textContent = 'Remove Row';
+        removeRowBtn.onclick = () => tr.remove();
+        tr.appendChild(removeRowBtn);
+        tbl.appendChild(tr);
+    }
+
+    const topRow = document.createElement('tr');
+    for (let col = 0; col < c; col++) {
+        const th = document.createElement('th');
+        th.textContent = `Column ${col + 1}`;
+        th.style.border = '1px solid black';
+        th.style.padding = '5px';
+
+        const colBtn = document.createElement('button');
+        colBtn.textContent = 'Remove Column';
+        colBtn.onclick = () => dropColumn(col);
+        th.appendChild(colBtn);
+        topRow.appendChild(th);
+    }
+    tbl.insertBefore(topRow, tbl.firstChild);
+    wrapper.appendChild(tbl);
+}
+
+function dropColumn(idx) {
+    const tbl = document.querySelector('table');
+    for (let r of tbl.rows) {
+        if (r.cells[idx]) r.deleteCell(idx);
+    }
+}
+</script>
+
+</body>
+</html>
